@@ -1,7 +1,9 @@
 <template>
     <div class="search">
-      <input @input="getRequest" v-model="query" type="text">
-      <button>Поиск</button>
+      <div class="search__wrapper">
+        <input @input="getRequest" v-model="query" type="text">
+        <button>Поиск</button>
+      </div>
     </div>
 </template>
 

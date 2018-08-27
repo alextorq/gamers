@@ -38,7 +38,7 @@ export default {
         user.rang = index + 1;
         this.$store.state.allUsers.push(user)
       });
-      array.splice(0, 6).forEach(user => {this.$store.state.users.push(user)});
+      array.splice(0, this.$store.state.countUser).forEach(user => {this.$store.state.users.push(user)});
     }, response => {
       console.log(response)
     });

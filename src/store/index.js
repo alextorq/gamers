@@ -7,7 +7,8 @@ const store = new Vuex.Store({
     users: [],
     usersСache: [],
     allUsers: [],
-    query: ''
+    query: '',
+    countUser: 7
   },
   actions: {
     getUsers() {
@@ -39,9 +40,13 @@ const store = new Vuex.Store({
       state.users.sort(sortUsers)
     },
     search(state, payload) {
-      state.users.filter(
-        (user) => {user.name.startsWith(payload)})
-        .forEach((user) => {store.users.push(user)});
+      if (state.usersСache.length === 0) {
+        state.usersСache = state.users;
+      }
+      state.users = [];
+      state.usersСache.filter(
+        (user) => user.name.startsWith(payload))
+        .forEach((user) => {state.users.push(user)});
     }
   }
 });
