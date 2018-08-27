@@ -1,5 +1,6 @@
 <template>
     <div class="user__item">
+      <div class="user__item-number">{{user.rang}}</div>
       <div class="user__item-avatar" v-html="logo"></div>
       <p class="user__item-name">{{user.name}} {{user.secondName}}</p>
       <p class="user__item-age">{{user.age}} лет</p>
@@ -11,7 +12,8 @@
     export default {
         name: "user",
         props: {
-          user: {}
+          user: {},
+          number: ''
         },
         computed: {
             logo: function () {

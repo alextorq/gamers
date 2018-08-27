@@ -5,12 +5,19 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     users: [],
-    allUsers: []
+    usersСache: [],
+    allUsers: [],
+    query: ''
   },
   actions: {
     getUsers() {
 
-    },
+    }
+  },
+  getters: {
+
+  },
+  mutations: {
     sortInc(state, payload){
       function sortUsers(a, b) {
         return a[payload] - b[payload]
@@ -30,13 +37,12 @@ const store = new Vuex.Store({
         }
       }
       state.users.sort(sortUsers)
+    },
+    search(state, payload) {
+      state.users.filter(
+        (user) => {user.name.startsWith(payload)})
+        .forEach((user) => {store.users.push(user)});
     }
-  },
-  getters: {
-
-  },
-  mutations: {
-
   }
 });
 

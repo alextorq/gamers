@@ -34,7 +34,10 @@ export default {
         }
       }
       let array = response.body.sort(sortUsers);
-      array.forEach(user => {this.$store.state.allUsers.push(user)});
+      array.forEach((user, index) => {
+        user.rang = index + 1;
+        this.$store.state.allUsers.push(user)
+      });
       array.splice(0, 6).forEach(user => {this.$store.state.users.push(user)});
     }, response => {
       console.log(response)
