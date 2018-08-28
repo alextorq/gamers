@@ -29,7 +29,7 @@ const store = new Vuex.Store({
       }, 100)
       //эмулируем зарузку с сервера
     },
-    firstUploadUsers(context, payload) {
+    firstDownloadUsers(context, payload) {
       payload.$http.get('http://localhost:3000/users').then(response => {
         function sortUsers(a, b) {
 
@@ -51,13 +51,11 @@ const store = new Vuex.Store({
           user.rang = index + 1;
           this.state.allUsers.push(user)
         });
+        //Добавляем позицию в рейтинге
         array.splice(0, this.state.countUser).forEach(user => {this.state.users.push(user)});
       }, response => {
         console.error(response)
       });
-
-
-
     }
   },
   mutations: {
@@ -95,6 +93,7 @@ const store = new Vuex.Store({
 
       state.users = [];
       let countWord =  payload.split(' ').length;
+      console.log(payload.split(' '));
         //Смотрим количество слов в запросе
 
         if (countWord === 1) {
@@ -117,11 +116,14 @@ const store = new Vuex.Store({
                 userNameFliter = user.name.toUpperCase().startsWith(payload.split(' ')[1].toUpperCase());
               }
 
-              let userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[1].toUpperCase());
+              let userSecondNameFliter;
+
+              userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[1].toUpperCase());
 
               if (!userSecondNameFliter) {
                 userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[0].toUpperCase());
               }
+
 
               return userNameFliter && userSecondNameFliter;
             }

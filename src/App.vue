@@ -16,7 +16,7 @@ export default {
     appUserCatalog
   },
   created() {
-    this.$store.dispatch('firstUploadUsers', this);
+    this.$store.dispatch('firstDownloadUsers', this);
   }
 }
 </script>

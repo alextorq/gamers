@@ -17,6 +17,45 @@
 .users-catalog
   padding-left: 5%
   padding-right: 5%
+
+  .sort-direction-wrapper
+    position: absolute
+    top: 100%
+    display: none
+    background: #ffffff
+    width: 150px
+    box-shadow: 0 0 10px rgba(black, 0.5)
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    button
+      border: none
+      background: transparent
+      color: black
+      cursor: pointer
+      text-align: left
+      margin: 0
+      margin-top: 5px
+      margin-bottom: 5px
+      padding: 10px
+      &.active
+        background: grey
+        color: white
+  .sort-selector
+    position: relative
+    &:after
+      position: absolute
+      content: '→'
+      right: 10px
+      width: 10px
+      height: 10px
+      transition: all 0.2s
+
+    &:hover
+      .sort-direction-wrapper
+        display: flex
+      &:after
+        transform: rotate(90deg)
 .user__item-name
   width: 40%
 .user__item-age

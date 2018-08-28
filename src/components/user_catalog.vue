@@ -5,16 +5,20 @@
       <div class="user__item-number">#</div>
       <div class="user__item-avatar">АЯ</div>
       <p class="user__item-name">Имя</p>
-      <p class="user__item-age">
-        <button @click="sortAsc('age')">+</button>
-        Возраст
-        <button @click="sortDesc('age')">-</button>
-      </p>
-      <p class="user__item-rating">
-        <button @click="sortAsc('rating')">+</button>
-        Рейтинг
-        <button @click="sortDesc('rating')">-</button>
-      </p>
+      <div class="user__item-age sort-selector">
+        <span>Возраст</span>
+        <div class="sort-direction-wrapper">
+          <button @click="sortAsc('age', $event)">По возрастанию</button>
+          <button @click="sortDesc('age', $event)">По убыванию</button>
+        </div>
+      </div>
+      <div class="user__item-rating sort-selector">
+          Рейтинг
+        <div class="sort-direction-wrapper">
+            <button @click="sortAsc('rating', $event)">По возрастанию</button>
+            <button @click="sortDesc('rating', $event)">По убыванию</button>
+        </div>
+      </div>
     </div>
     <appUser v-for="(user, index) in users" :key="index" :user="user"></appUser>
   </div>
@@ -28,7 +32,8 @@
         name: "user_catalog",
       data() {
           return {
-            viewportHeight: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+            viewportHeight: Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+            activeSortButton : ''
           }
       },
         computed: {
@@ -37,11 +42,25 @@
           }
         },
       methods: {
-        sortAsc(field) {
-          this.$store.commit('sortAsc', field);
+        switchActiveSort(event) {
+          let target = event.target;
+          if (!this.activeSortButton) {
+            target.classList.add('active');
+            this.activeSortButton = target;
+          }
+          else {
+            this.activeSortButton.classList.remove('active');
+            target.classList.add('active');
+            this.activeSortButton = target;
+          }
         },
-        sortDesc(field){
+        sortAsc(field, event) {
+          this.$store.commit('sortAsc', field);
+          this.switchActiveSort(event);
+        },
+        sortDesc(field, event){
           this.$store.commit('sortDesc', field);
+          this.switchActiveSort(event);
         }
       },
         components: {
