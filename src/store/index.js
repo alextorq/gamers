@@ -7,12 +7,17 @@ const store = new Vuex.Store({
     users: [],
     usersСache: [],
     allUsers: [],
-    query: '',
-    countUser: 7
+    countUser: 7,
+    page: 1,
+    maxPage: 1
   },
   actions: {
-    getUsers() {
-
+    getUsers(context) {
+      setTimeout(() => {
+        context.state.allUsers.splice(context.state.countUser * context.state.page, context.state.countUser * (++context.state.page))
+          .forEach(user => {context.state.users.push(user)});
+        context.state.page = Math.min(context.state.maxPage, context.state.page++);
+      }, 100)
     }
   },
   getters: {
@@ -44,8 +49,9 @@ const store = new Vuex.Store({
         state.usersСache = state.users;
       }
       state.users = [];
-      state.usersСache.filter(
-        (user) => user.name.startsWith(payload))
+         query: '', state.usersСache.filter(
+        (user) => user.name.toUpperCase().startsWith(payload.toUpperCase())
+      )
         .forEach((user) => {state.users.push(user)});
     }
   }

@@ -34,13 +34,14 @@ export default {
         }
       }
       let array = response.body.sort(sortUsers);
+      this.$store.state.maxPage = Math.ceil(array.length / this.$store.state.countUser);
       array.forEach((user, index) => {
         user.rang = index + 1;
         this.$store.state.allUsers.push(user)
       });
       array.splice(0, this.$store.state.countUser).forEach(user => {this.$store.state.users.push(user)});
     }, response => {
-      console.log(response)
+      console.error(response)
     });
   }
 }

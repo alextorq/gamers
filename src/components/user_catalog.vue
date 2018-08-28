@@ -1,5 +1,5 @@
 <template>
-  <div class="users-catalog">
+  <div ref="searchNode" class="users-catalog">
     <appSearch></appSearch>
     <div class="user__item general">
       <div class="user__item-number">#</div>
@@ -25,10 +25,12 @@
     import appSearch from './search'
     export default {
         name: "user_catalog",
+      data() {
+          return {
+            viewportHeight: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+          }
+      },
         computed: {
-          searchString() {
-              return this.$store.state.query;
-          },
           users() {
             return this.$store.state.users;
           }
@@ -44,7 +46,16 @@
         components: {
           appUser,
           appSearch
-        }
+        },
+      mounted() {
+        var self = this;
+        document.addEventListener('scroll', function() {
+          let bottom =  self.$refs.searchNode.getBoundingClientRect().bottom;
+          if (self.viewportHeight - bottom > 0) {
+            self.$store.dispatch('getUsers');
+          }
+        });
+      }
     }
 </script>
 
