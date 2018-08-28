@@ -5,18 +5,20 @@
       <div class="user__item-number">#</div>
       <div class="user__item-avatar">АЯ</div>
       <p class="user__item-name">Имя</p>
-      <div class="user__item-age sort-selector">
-        <span>Возраст</span>
-        <div class="sort-direction-wrapper">
-          <button @click="sortAsc('age', $event)">По возрастанию</button>
-          <button @click="sortDesc('age', $event)">По убыванию</button>
-        </div>
-      </div>
+      <p class="user__item-age">Возраст</p>
       <div class="user__item-rating sort-selector">
-          Рейтинг
+          Сортировка
         <div class="sort-direction-wrapper">
-            <button @click="sortAsc('rating', $event)">По возрастанию</button>
-            <button @click="sortDesc('rating', $event)">По убыванию</button>
+            <div class="button-group">
+              <span>Возраст:</span>
+              <button @click="sortAsc('age', $event)">по возрастанию</button>
+              <button @click="sortDesc('age', $event)">по убыванию</button>
+            </div>
+            <div class="button-group">
+               <span>Рейтинг:</span>
+                <button @click="sortDesc('rating', $event)">по возрастанию</button>
+                <button @click="sortAsc('rating', $event)">по убыванию</button>
+            </div>
         </div>
       </div>
     </div>

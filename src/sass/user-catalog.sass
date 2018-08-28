@@ -14,6 +14,15 @@
   display: flex
   justify-content: center
   align-items: center
+  &.first
+    border: 5px solid gold
+    box-shadow: 0 0 15px 4px gold
+  &.second
+    border: 4px solid silver
+    box-shadow: 0 0 15px 4px silver
+  &.third
+    border: 3px solid #cd7f32
+    box-shadow: 0 0 15px 4px #cd7f32
 .users-catalog
   padding-left: 5%
   padding-right: 5%
@@ -35,14 +44,15 @@
       cursor: pointer
       text-align: left
       margin: 0
-      margin-top: 5px
-      margin-bottom: 5px
-      padding: 10px
+      padding: 5px
       &.active
         background: grey
         color: white
   .sort-selector
     position: relative
+    .button-group
+      margin-top: 5px
+      margin-bottom: 5px
     &:after
       position: absolute
       content: '→'

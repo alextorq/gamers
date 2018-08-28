@@ -1,7 +1,7 @@
 <template>
     <div class="user__item">
       <div class="user__item-number">{{user.rang}}</div>
-      <div class="user__item-avatar" v-html="logo"></div>
+      <div :class="firstTree" class="user__item-avatar" v-html="logo"></div>
       <p class="user__item-name">{{user.name}} {{user.secondName}}</p>
       <p class="user__item-age">{{user.age}} лет</p>
       <p class="user__item-rating">{{user.rating}} баллов</p>
@@ -29,8 +29,20 @@
                }
 
                return avatar;
+            },
+            firstTree(){
+              if (this.user.rang === 1) {
+                return {'first': true }
+              }
+              else if (this.user.rang === 2) {
+                return {'second': true }
+              }
+              else if (this.user.rang === 3) {
+                return {'third': true }
+              }
             }
-        }
+        },
+
     }
 </script>
 
