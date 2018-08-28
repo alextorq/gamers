@@ -44,6 +44,9 @@
           }
         },
       methods: {
+        /**
+        * @description Выделение активной кнопки сортировки
+        **/
         switchActiveSort(event) {
           let target = event.target;
 
@@ -70,9 +73,11 @@
           appSearch
         },
       mounted() {
+        //Обработчик на скрол для опредиления прокрутки до конца списка
         let self = this;
         document.addEventListener('scroll', function() {
           let bottom =  self.$refs.searchNode.getBoundingClientRect().bottom;
+          
           if (self.viewportHeight - bottom > 0) {
             self.$store.dispatch('getUsers');
           }

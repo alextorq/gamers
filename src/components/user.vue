@@ -29,13 +29,14 @@
                return avatar;
             },
             firstTree(){
-
-              if (this.user.rang === 1) {
-                return {'first': true }
-              } else if (this.user.rang === 2) {
-                return {'second': true }
-              } else if (this.user.rang === 3) {
-                return {'third': true }
+              //Выделяем классами первые три игрока
+              switch(this.user.rang) {
+                case 1:
+                  return {'first': true };
+                case 2:
+                  return {'second': true };
+                case 3:
+                  return {'third': true };
               }
             }
         },
