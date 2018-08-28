@@ -19,26 +19,31 @@ const store = new Vuex.Store({
         context.state.allUsers.splice(
           context.state.countUser * context.state.page, context.state.countUser * (++context.state.page)
         ).forEach(user => {context.state.users.push(user)});
+        //нарезаем новых пользователей
         context.state.page = Math.min(context.state.maxPage, context.state.page++);
+        // обновляем номер текущей страницы
       }, 100)
       //эмулируем зарузку с сервера
     }
   },
   mutations: {
-    sortInc(state, payload){
+    sortAsc(state, payload){
       function sortUsers(a, b) {
         return a[payload] - b[payload]
       }
       state.users.sort(sortUsers)
     },
-    sortDecr(state, payload){
+    sortDesc(state, payload){
       function sortUsers(a, b) {
+
         if (b[payload] > a[payload]){
           return 1
         }
+
         else if (b[payload] < a[payload]) {
           return -1;
         }
+
         else {
           return 0;
         }
@@ -49,9 +54,11 @@ const store = new Vuex.Store({
       if (state.usersСache.length === 0) {
         state.usersСache = state.users;
       }
+
       state.users = [];
       let countWord =  payload.split(' ').length;
-        //Смотрим сколько слов в запросе
+        //Смотрим количество слов в запросе
+
         if (countWord === 1) {
           //если только одно слово
           state.usersСache.filter(
@@ -62,17 +69,22 @@ const store = new Vuex.Store({
             }
           ).forEach((user) => {state.users.push(user)});
         }
+
         else {
           state.usersСache.filter(
             (user) => {
               let userNameFliter = user.name.toUpperCase().startsWith(payload.split(' ')[0].toUpperCase());
+
               if (!userNameFliter) {
                 userNameFliter = user.name.toUpperCase().startsWith(payload.split(' ')[1].toUpperCase());
               }
+
               let userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[1].toUpperCase());
+
               if (!userSecondNameFliter) {
                 userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[0].toUpperCase());
               }
+
               return userNameFliter && userSecondNameFliter;
             }
           ).forEach((user) => {state.users.push(user)});

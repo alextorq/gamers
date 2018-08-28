@@ -6,14 +6,14 @@
       <div class="user__item-avatar">АЯ</div>
       <p class="user__item-name">Имя</p>
       <p class="user__item-age">
-        <button @click="sortInc('age')">+</button>
+        <button @click="sortAsc('age')">+</button>
         Возраст
-        <button @click="sortDecr('age')">-</button>
+        <button @click="sortDesc('age')">-</button>
       </p>
       <p class="user__item-rating">
-        <button @click="sortInc('rating')">+</button>
+        <button @click="sortAsc('rating')">+</button>
         Рейтинг
-        <button @click="sortDecr('rating')">-</button>
+        <button @click="sortDesc('rating')">-</button>
       </p>
     </div>
     <appUser v-for="(user, index) in users" :key="index" :user="user"></appUser>
@@ -37,11 +37,11 @@
           }
         },
       methods: {
-        sortInc(field) {
-          this.$store.commit('sortInc', field);
+        sortAsc(field) {
+          this.$store.commit('sortAsc', field);
         },
-        sortDecr(field){
-          this.$store.commit('sortDecr', field);
+        sortDesc(field){
+          this.$store.commit('sortDesc', field);
         }
       },
         components: {

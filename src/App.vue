@@ -23,12 +23,15 @@ export default {
   created() {
     this.$http.get('http://localhost:3000/users').then(response => {
       function sortUsers(a, b) {
+
         if (b.rating > a.rating){
           return 1
         }
+
         else if (b.rating < a.rating) {
           return -1;
         }
+
         else {
           return 0;
         }

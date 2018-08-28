@@ -18,14 +18,17 @@
         computed: {
             logo: function () {
               //если у пользователя есть картинка то загружаем ее иначе инициалы
-              let avat = '';
+              let avatar = '';
+
                if (this.user.avatar) {
-                 avat = `<img src="${this.user.avatar}">`;
+                 avatar = `<img src="${this.user.avatar}">`;
                }
+
                else {
-                 avat = `<p> ${this.user.name.substring(0, 1)}${this.user.secondName.substring(0, 1)}</p>`;
+                 avatar = `<p> ${this.user.name.substring(0, 1)}${this.user.secondName.substring(0, 1)}</p>`;
                }
-               return avat;
+
+               return avatar;
             }
         }
     }
