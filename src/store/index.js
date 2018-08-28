@@ -16,8 +16,9 @@ const store = new Vuex.Store({
   actions: {
     getUsers(context) {
       setTimeout(() => {
-        context.state.allUsers.splice(context.state.countUser * context.state.page, context.state.countUser * (++context.state.page))
-          .forEach(user => {context.state.users.push(user)});
+        context.state.allUsers.splice(
+          context.state.countUser * context.state.page, context.state.countUser * (++context.state.page)
+        ).forEach(user => {context.state.users.push(user)});
         context.state.page = Math.min(context.state.maxPage, context.state.page++);
       }, 100)
       //эмулируем зарузку с сервера
@@ -50,6 +51,7 @@ const store = new Vuex.Store({
       }
       state.users = [];
       let countWord =  payload.split(' ').length;
+        //Смотрим сколько слов в запросе
         if (countWord === 1) {
           //если только одно слово
           state.usersСache.filter(
@@ -61,7 +63,19 @@ const store = new Vuex.Store({
           ).forEach((user) => {state.users.push(user)});
         }
         else {
-          
+          state.usersСache.filter(
+            (user) => {
+              let userNameFliter = user.name.toUpperCase().startsWith(payload.split(' ')[0].toUpperCase());
+              if (!userNameFliter) {
+                userNameFliter = user.name.toUpperCase().startsWith(payload.split(' ')[1].toUpperCase());
+              }
+              let userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[1].toUpperCase());
+              if (!userSecondNameFliter) {
+                userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[0].toUpperCase());
+              }
+              return userNameFliter && userSecondNameFliter;
+            }
+          ).forEach((user) => {state.users.push(user)});
         }
     }
   }
