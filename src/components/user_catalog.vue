@@ -16,8 +16,8 @@
             </div>
             <div class="button-group">
                <span>Рейтинг:</span>
-                <button @click="sortDesc('rating', $event)">по убыванию</button>
                 <button @click="sortAsc('rating', $event)">по возрастанию</button>
+               <button @click="sortDesc('rating', $event)">по убыванию</button>
             </div>
         </div>
       </div>
