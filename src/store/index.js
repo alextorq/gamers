@@ -11,7 +11,9 @@ const store = new Vuex.Store({
     //расчитываем количество игроков для подгрузки в зависимости от viewport height
     //300 и 60 расчитаны опытным путем
     page: 1,
-    maxPage: 1
+    maxPage: 1,
+    sortDirection: 'sortDesc',
+    sortField: 'rating'
   },
   actions: {
     getUsers(context) {
@@ -22,8 +24,40 @@ const store = new Vuex.Store({
         //нарезаем новых пользователей
         context.state.page = Math.min(context.state.maxPage, context.state.page++);
         // обновляем номер текущей страницы
+        context.commit(`${context.state.sortDirection}`, `${context.state.sortField}`);
+        //Смотрим сортировку и обновляем
       }, 100)
       //эмулируем зарузку с сервера
+    },
+    firstUploadUsers(context, payload) {
+      payload.$http.get('http://localhost:3000/users').then(response => {
+        function sortUsers(a, b) {
+
+          if (b.rating > a.rating){
+            return 1
+          }
+
+          else if (b.rating < a.rating) {
+            return -1;
+          }
+
+          else {
+            return 0;
+          }
+        }
+        let array = response.body.sort(sortUsers);
+        this.state.maxPage = Math.ceil(array.length / this.state.countUser);
+        array.forEach((user, index) => {
+          user.rang = index + 1;
+          this.state.allUsers.push(user)
+        });
+        array.splice(0, this.state.countUser).forEach(user => {this.state.users.push(user)});
+      }, response => {
+        console.error(response)
+      });
+
+
+
     }
   },
   mutations: {
@@ -31,7 +65,9 @@ const store = new Vuex.Store({
       function sortUsers(a, b) {
         return a[payload] - b[payload]
       }
-      state.users.sort(sortUsers)
+      state.users.sort(sortUsers);
+      state.sortDirection = 'sortAsc';
+      state.sortField = payload;
     },
     sortDesc(state, payload){
       function sortUsers(a, b) {
@@ -48,7 +84,9 @@ const store = new Vuex.Store({
           return 0;
         }
       }
-      state.users.sort(sortUsers)
+      state.users.sort(sortUsers);
+      state.sortDirection = 'sortDesc';
+      state.sortField = payload;
     },
     search(state, payload) {
       if (state.usersСache.length === 0) {

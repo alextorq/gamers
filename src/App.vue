@@ -12,40 +12,11 @@
 
 export default {
   name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
   components: {
     appUserCatalog
   },
   created() {
-    this.$http.get('http://localhost:3000/users').then(response => {
-      function sortUsers(a, b) {
-
-        if (b.rating > a.rating){
-          return 1
-        }
-
-        else if (b.rating < a.rating) {
-          return -1;
-        }
-
-        else {
-          return 0;
-        }
-      }
-      let array = response.body.sort(sortUsers);
-      this.$store.state.maxPage = Math.ceil(array.length / this.$store.state.countUser);
-      array.forEach((user, index) => {
-        user.rang = index + 1;
-        this.$store.state.allUsers.push(user)
-      });
-      array.splice(0, this.$store.state.countUser).forEach(user => {this.$store.state.users.push(user)});
-    }, response => {
-      console.error(response)
-    });
+    this.$store.dispatch('firstUploadUsers', this);
   }
 }
 </script>
