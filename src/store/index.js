@@ -32,16 +32,11 @@ const store = new Vuex.Store({
     firstDownloadUsers(context, payload) {
       payload.$http.get('http://localhost:3000/users').then(response => {
         function sortUsers(a, b) {
-
-          if (b.rating > a.rating){
+          if (b.rating > a.rating) {
             return 1
-          }
-
-          else if (b.rating < a.rating) {
+          } else if (b.rating < a.rating) {
             return -1;
-          }
-
-          else {
+          } else {
             return 0;
           }
         }
@@ -69,16 +64,11 @@ const store = new Vuex.Store({
     },
     sortDesc(state, payload){
       function sortUsers(a, b) {
-
         if (b[payload] > a[payload]){
           return 1
-        }
-
-        else if (b[payload] < a[payload]) {
+        } else if (b[payload] < a[payload]) {
           return -1;
-        }
-
-        else {
+        } else {
           return 0;
         }
       }
@@ -93,7 +83,6 @@ const store = new Vuex.Store({
 
       state.users = [];
       let countWord =  payload.split(' ').length;
-      console.log(payload.split(' '));
         //Смотрим количество слов в запросе
 
         if (countWord === 1) {
@@ -105,9 +94,7 @@ const store = new Vuex.Store({
               return userNameFliter || userSecondNameFliter;
             }
           ).forEach((user) => {state.users.push(user)});
-        }
-
-        else {
+        } else {
           state.usersСache.filter(
             (user) => {
               let userNameFliter = user.name.toUpperCase().startsWith(payload.split(' ')[0].toUpperCase());
@@ -117,13 +104,11 @@ const store = new Vuex.Store({
               }
 
               let userSecondNameFliter;
-
               userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[1].toUpperCase());
 
               if (!userSecondNameFliter) {
                 userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[0].toUpperCase());
               }
-
 
               return userNameFliter && userSecondNameFliter;
             }

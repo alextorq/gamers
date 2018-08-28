@@ -31,7 +31,7 @@
     import appUser from './user'
     import appSearch from './search'
     export default {
-        name: "user_catalog",
+      name: "user_catalog",
       data() {
           return {
             viewportHeight: Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
@@ -46,11 +46,11 @@
       methods: {
         switchActiveSort(event) {
           let target = event.target;
+
           if (!this.activeSortButton) {
             target.classList.add('active');
             this.activeSortButton = target;
-          }
-          else {
+          } else {
             this.activeSortButton.classList.remove('active');
             target.classList.add('active');
             this.activeSortButton = target;
@@ -79,9 +79,6 @@
         });
       }
     }
-    /**
-      @todo Сделать активную кнопку сортировки
-     **/
 
 </script>
 

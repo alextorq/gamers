@@ -22,22 +22,19 @@
 
                if (this.user.avatar) {
                  avatar = `<img src="${this.user.avatar}">`;
-               }
-
-               else {
+               } else {
                  avatar = `<p> ${this.user.name.substring(0, 1)}${this.user.secondName.substring(0, 1)}</p>`;
                }
 
                return avatar;
             },
             firstTree(){
+
               if (this.user.rang === 1) {
                 return {'first': true }
-              }
-              else if (this.user.rang === 2) {
+              } else if (this.user.rang === 2) {
                 return {'second': true }
-              }
-              else if (this.user.rang === 3) {
+              } else if (this.user.rang === 3) {
                 return {'third': true }
               }
             }
