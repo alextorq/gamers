@@ -17,6 +17,7 @@
         },
         computed: {
             logo: function () {
+              //если у пользователя есть картинка то загружаем ее иначе инициалы
               let avat = '';
                if (this.user.avatar) {
                  avat = `<img src="${this.user.avatar}">`;

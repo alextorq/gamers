@@ -1,8 +1,7 @@
 <template>
     <div class="search">
       <div class="search__wrapper">
-        <input @input="getRequest" v-model="query" type="text">
-        <button>Поиск</button>
+        <input @input="getRequest" v-model="query" type="text" placeholder="имя или фамилия">
       </div>
     </div>
 </template>

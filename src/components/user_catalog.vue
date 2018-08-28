@@ -20,6 +20,7 @@
   </div>
 </template>
 
+
 <script>
     import appUser from './user'
     import appSearch from './search'
@@ -48,7 +49,7 @@
           appSearch
         },
       mounted() {
-        var self = this;
+        let self = this;
         document.addEventListener('scroll', function() {
           let bottom =  self.$refs.searchNode.getBoundingClientRect().bottom;
           if (self.viewportHeight - bottom > 0) {
@@ -57,6 +58,10 @@
         });
       }
     }
+    /**
+      @todo Сделать активную кнопку сортировки
+     **/
+
 </script>
 
 <style>
