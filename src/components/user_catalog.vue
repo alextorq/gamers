@@ -1,7 +1,7 @@
 <template>
-  <div ref="searchNode" class="users-catalog">
+  <ul ref="searchNode" class="users-catalog">
     <appSearch></appSearch>
-    <div class="user__item general">
+    <li class="user__item general">
       <div class="user__item-number">#</div>
       <div class="user__item-avatar">АЯ</div>
       <p class="user__item-name">Имя</p>
@@ -21,9 +21,9 @@
             </div>
         </div>
       </div>
-    </div>
+    </li>
     <appUser v-for="(user, index) in users" :key="index" :user="user"></appUser>
-  </div>
+  </ul>
 </template>
 
 
@@ -71,12 +71,17 @@
       mounted() {
         //Обработчик на скрол для опредиления прокрутки до конца списка
         let self = this;
-        document.addEventListener('scroll', function() {
-          let bottom =  self.$refs.searchNode.getBoundingClientRect().bottom;
+        let lastTime = performance.now();
+        document.addEventListener('scroll', () => {
+          let currentTime = performance.now();
+          if (currentTime - lastTime > 16) {
+            let bottom =  self.$refs.searchNode.getBoundingClientRect().bottom;
 
-          if (self.viewportHeight - bottom > 0) {
-            self.$store.dispatch('getUsers');
+            if (self.viewportHeight - bottom > 0) {
+              self.$store.dispatch('getUsers');
+            }
           }
+          lastTime = currentTime;
         });
       }
     }

@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     //300 и 60 расчитаны опытным путем
     page: 1,
     maxPage: 1,
-    sortDirection: 'sortDesc',
+    sortDirection: 'DESC',
     sortField: 'rating'
   },
   actions: {
@@ -55,7 +55,6 @@ const store = new Vuex.Store({
   },
   mutations: {
     sortBy(state, payload) {
-      let field = payload.field;
       function sortAsc(a, b) {
         return a[field] - b[field]
       }
@@ -68,9 +67,10 @@ const store = new Vuex.Store({
           return 0;
         }
       }
+      let field = payload.field;
       let sortFunction = payload.direction === 'ASC' ? sortAsc : sortDesc;
-      state.users.sort(sortFunction);
 
+      state.users.sort(sortFunction);
       state.sortDirection = payload.direction;
       state.sortField = payload.field;
     },
