@@ -24,7 +24,7 @@ const store = new Vuex.Store({
         //нарезаем новых пользователей
         context.state.page = Math.min(context.state.maxPage, context.state.page++);
         // обновляем номер текущей страницы
-        context.commit(`${context.state.sortDirection}`, `${context.state.sortField}`);
+        context.commit('sortBy', {field: context.state.sortField, direction: context.state.sortDirection});
         //Смотрим сортировку и обновляем
       }, 100)
       //эмулируем зарузку с сервера
@@ -54,28 +54,27 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    sortAsc(state, payload){
-      function sortUsers(a, b) {
-        return a[payload] - b[payload]
+    sortBy(state, payload) {
+      let field = payload.field;
+      function sortAsc(a, b) {
+        return a[field] - b[field]
       }
-      state.users.sort(sortUsers);
-      state.sortDirection = 'sortAsc';
-      state.sortField = payload;
-    },
-    sortDesc(state, payload){
-      function sortUsers(a, b) {
-        if (b[payload] > a[payload]){
+      function sortDesc(a, b) {
+        if (b[field] > a[field]){
           return 1
-        } else if (b[payload] < a[payload]) {
+        } else if (b[field] < a[field]) {
           return -1;
         } else {
           return 0;
         }
       }
-      state.users.sort(sortUsers);
-      state.sortDirection = 'sortDesc';
-      state.sortField = payload;
+      let sortFunction = payload.direction === 'ASC' ? sortAsc : sortDesc;
+      state.users.sort(sortFunction);
+
+      state.sortDirection = payload.direction;
+      state.sortField = payload.field;
     },
+
     search(state, payload) {
       if (state.usersСache.length === 0) {
         state.usersСache = state.users;

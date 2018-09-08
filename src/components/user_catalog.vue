@@ -11,13 +11,13 @@
         <div class="sort-direction-wrapper">
             <div class="button-group">
               <span>Возраст:</span>
-              <button @click="sortAsc('age', $event)">по возрастанию</button>
-              <button @click="sortDesc('age', $event)">по убыванию</button>
+              <button @click="sortBy('age', 'ASC',$event)">по возрастанию</button>
+              <button @click="sortBy('age', 'DESC', $event)">по убыванию</button>
             </div>
             <div class="button-group">
                <span>Рейтинг:</span>
-                <button @click="sortAsc('rating', $event)">по возрастанию</button>
-               <button @click="sortDesc('rating', $event)">по убыванию</button>
+                <button @click="sortBy('rating', 'ASC',$event)">по возрастанию</button>
+               <button @click="sortBy('rating', 'DESC', $event)">по убыванию</button>
             </div>
         </div>
       </div>
@@ -59,12 +59,8 @@
             this.activeSortButton = target;
           }
         },
-        sortAsc(field, event) {
-          this.$store.commit('sortAsc', field);
-          this.switchActiveSort(event);
-        },
-        sortDesc(field, event){
-          this.$store.commit('sortDesc', field);
+        sortBy(field, direction, event) {
+          this.$store.commit('sortBy', {field, direction});
           this.switchActiveSort(event);
         }
       },
@@ -77,7 +73,7 @@
         let self = this;
         document.addEventListener('scroll', function() {
           let bottom =  self.$refs.searchNode.getBoundingClientRect().bottom;
-          
+
           if (self.viewportHeight - bottom > 0) {
             self.$store.dispatch('getUsers');
           }
