@@ -22,7 +22,8 @@
         </div>
       </div>
     </li>
-    <appUser v-for="(user, index) in users" :key="index" :user="user"></appUser>
+    <appUser v-for="(user, index) in users" :key="index" :user="user" v-if="users.length > 0"></appUser>
+    <li v-else>Пользователи отстутствуют</li>
   </ul>
 </template>
 
