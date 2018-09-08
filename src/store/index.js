@@ -18,12 +18,16 @@ const store = new Vuex.Store({
   actions: {
     getUsers(context) {
       setTimeout(() => {
-        context.state.allUsers.splice(
-          context.state.countUser * context.state.page, context.state.countUser * (++context.state.page)
-        ).forEach(user => {context.state.users.push(user)});
+        let nextPage = context.state.page + 1;
+        let users =  context.state.allUsers.splice(
+          context.state.countUser * context.state.page, context.state.countUser * (nextPage)
+        );
         //нарезаем новых пользователей
-        context.state.page = Math.min(context.state.maxPage, context.state.page++);
-        // обновляем номер текущей страницы
+        let currentPage =  Math.min(context.state.maxPage, nextPage);
+        // вычисляем текущей страницы
+
+        context.commit('addGamers', {users, page: currentPage});
+        //добавляем пользователей
         context.commit('sortBy', {field: context.state.sortField, direction: context.state.sortDirection});
         //Смотрим сортировку и обновляем
       }, 100)
@@ -47,7 +51,8 @@ const store = new Vuex.Store({
           this.state.allUsers.push(user)
         });
         //Добавляем позицию в рейтинге
-        array.splice(0, this.state.countUser).forEach(user => {this.state.users.push(user)});
+        let users = array.splice(0, this.state.countUser);
+        context.commit('addGamers', {users, page: 1})
       }, response => {
         console.error(response)
       });
@@ -74,7 +79,10 @@ const store = new Vuex.Store({
       state.sortDirection = payload.direction;
       state.sortField = payload.field;
     },
-
+    addGamers(state, payload) {
+      state.users = state.users.concat(payload.users);
+      state.page = payload.page;
+    },
     search(state, payload) {
       if (state.usersСache.length === 0) {
         state.usersСache = state.users;
