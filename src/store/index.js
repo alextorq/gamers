@@ -15,17 +15,24 @@ const store = new Vuex.Store({
     sortDirection: 'DESC',
     sortField: 'rating'
   },
+  getters: {
+    users(state) {
+        return state.users;
+    }
+  },
   actions: {
     getUsers(context) {
       setTimeout(() => {
         let nextPage = context.state.page + 1;
+        if (nextPage > context.state.maxPage) {
+          return
+        }
         let users =  context.state.allUsers.splice(
           context.state.countUser * context.state.page, context.state.countUser * (nextPage)
         );
         //нарезаем новых пользователей
         let currentPage =  Math.min(context.state.maxPage, nextPage);
         // вычисляем текущей страницы
-
         context.commit('addGamers', {users, page: currentPage});
         //добавляем пользователей
         context.commit('sortBy', {field: context.state.sortField, direction: context.state.sortDirection});
