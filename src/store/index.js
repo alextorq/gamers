@@ -18,6 +18,12 @@ const store = new Vuex.Store({
   getters: {
     users(state) {
         return state.users;
+    },
+    countGamers(state) {
+      return {
+        current: state.users.length,
+        allUsers: state.allUsers.length
+      }
     }
   },
   actions: {
@@ -27,7 +33,7 @@ const store = new Vuex.Store({
         if (nextPage > context.state.maxPage) {
           return
         }
-        let users =  context.state.allUsers.splice(
+        let users =  context.state.allUsers.slice(
           context.state.countUser * context.state.page, context.state.countUser * (nextPage)
         );
         //нарезаем новых пользователей

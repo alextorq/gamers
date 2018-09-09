@@ -24,6 +24,7 @@
     </li>
     <appUser v-for="(user, index) in users" :key="index" :user="user" v-if="users.length > 0"></appUser>
     <li v-else>Пользователи отстутствуют</li>
+    <li>{{countUsers.current}} / {{countUsers.allUsers}} геймеров</li>
   </ul>
 </template>
 
@@ -42,6 +43,9 @@
         computed: {
           users() {
             return this.$store.getters.users;
+          },
+          countUsers() {
+            return this.$store.getters.countGamers;
           }
         },
       methods: {
