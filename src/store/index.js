@@ -7,6 +7,7 @@ const store = new Vuex.Store({
     users: [],
     usersСache: [],
     allUsers: [],
+    searchGamers: [],
     countUser: Math.ceil((Math.max(document.documentElement.clientHeight, window.innerHeight || 0) -300 ) / 60) || 7,
     //расчитываем количество игроков для подгрузки в зависимости от viewport height
     //300 и 60 расчитаны опытным путем
@@ -24,6 +25,9 @@ const store = new Vuex.Store({
         current: state.users.length,
         allUsers: state.allUsers.length
       }
+    },
+    searchUsers(state) {
+      return state.searchGamers;
     }
   },
   actions: {
@@ -46,8 +50,8 @@ const store = new Vuex.Store({
       }, 100)
       //эмулируем зарузку с сервера
     },
-    firstDownloadUsers(context, payload) {
-      payload.$http.get('http://localhost:3000/users').then(response => {
+    firstDownloadUsers(context) {
+      Vue.http.get('http://localhost:3000/users').then(response => {
         function sortUsers(a, b) {
           if (b.rating > a.rating) {
             return 1
@@ -76,19 +80,14 @@ const store = new Vuex.Store({
       function sortAsc(a, b) {
         return a[field] - b[field]
       }
-      function sortDesc(a, b) {
-        if (b[field] > a[field]){
-          return 1
-        } else if (b[field] < a[field]) {
-          return -1;
-        } else {
-          return 0;
-        }
-      }
       let field = payload.field;
-      let sortFunction = payload.direction === 'ASC' ? sortAsc : sortDesc;
 
-      state.users.sort(sortFunction);
+      if (payload.direction === 'ASC'){
+        state.users.sort(sortAsc);
+      } else {
+        state.users.sort(sortAsc).reverse();
+      }
+
       state.sortDirection = payload.direction;
       state.sortField = payload.field;
     },
@@ -97,25 +96,21 @@ const store = new Vuex.Store({
       state.page = payload.page;
     },
     search(state, payload) {
-      if (state.usersСache.length === 0) {
-        state.usersСache = state.users;
-      }
-
-      state.users = [];
+      state.searchGamers = [];
       let countWord =  payload.split(' ').length;
         //Смотрим количество слов в запросе
 
         if (countWord === 1) {
           //если только одно слово
-          state.usersСache.filter(
+          state.users.filter(
             (user) => {
               let userNameFliter = user.name.toUpperCase().startsWith(payload.toUpperCase());
               let userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.toUpperCase());
               return userNameFliter || userSecondNameFliter;
             }
-          ).forEach((user) => {state.users.push(user)});
+          ).forEach((user) => {state.searchGamers.push(user)});
         } else {
-          state.usersСache.filter(
+          state.users.filter(
             (user) => {
               let userNameFliter = user.name.toUpperCase().startsWith(payload.split(' ')[0].toUpperCase());
 
@@ -132,7 +127,7 @@ const store = new Vuex.Store({
 
               return userNameFliter && userSecondNameFliter;
             }
-          ).forEach((user) => {state.users.push(user)});
+          ).forEach((user) => {state.searchGamers.push(user)});
         }
     }
   }

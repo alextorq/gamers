@@ -11,20 +11,22 @@
         <div class="sort-direction-wrapper">
             <div class="button-group">
               <span>Возраст:</span>
-              <button @click="sortBy('age', 'ASC',$event)">по возрастанию</button>
-              <button @click="sortBy('age', 'DESC', $event)">по убыванию</button>
+              <button :class="{active: activeSortButton === 1}" @click="sortBy('age', 'ASC', 1)">по возрастанию</button>
+              <button :class="{active: activeSortButton === 2}" @click="sortBy('age', 'DESC', 2)">по убыванию</button>
             </div>
             <div class="button-group">
                <span>Рейтинг:</span>
-                <button @click="sortBy('rating', 'ASC',$event)">по возрастанию</button>
-               <button @click="sortBy('rating', 'DESC', $event)">по убыванию</button>
+                <button :class="{active: activeSortButton === 3}" @click="sortBy('rating', 'ASC', 3)">по возрастанию</button>
+                <button :class="{active: activeSortButton === 4}" @click="sortBy('rating', 'DESC', 4)">по убыванию</button>
             </div>
         </div>
       </div>
     </li>
-    <appUser v-for="(user, index) in users" :key="index" :user="user" v-if="users.length > 0"></appUser>
-    <li v-else>Пользователи отстутствуют</li>
-    <li>{{countUsers.current}} / {{countUsers.allUsers}} геймеров</li>
+    <!--<appUser v-for="(searchUser, index) in searchUsers" :key="index"-->
+             <!--:user="searchUser" v-if="searchUser.length > 0"></appUser>-->
+    <appUser v-for="(user, index) in users" :key="'gamer_' + index" :user="user"></appUser>
+    <!--<li v-else>Пользователи отстутствуют</li>-->
+    <!--<li>{{countUsers.current}} / {{countUsers.allUsers}} геймеров</li>-->
   </ul>
 </template>
 
@@ -37,7 +39,7 @@
       data() {
           return {
             viewportHeight: Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
-            activeSortButton : ''
+            activeSortButton : 4,
           }
       },
         computed: {
@@ -46,27 +48,15 @@
           },
           countUsers() {
             return this.$store.getters.countGamers;
+          },
+          searchUsers() {
+            return this.$store.getters.searchUsers;
           }
         },
       methods: {
-        /**
-        * @description Выделение активной кнопки сортировки
-        **/
-        switchActiveSort(event) {
-          let target = event.target;
-
-          if (!this.activeSortButton) {
-            target.classList.add('active');
-            this.activeSortButton = target;
-          } else {
-            this.activeSortButton.classList.remove('active');
-            target.classList.add('active');
-            this.activeSortButton = target;
-          }
-        },
-        sortBy(field, direction, event) {
+        sortBy(field, direction, index) {
           this.$store.commit('sortBy', {field, direction});
-          this.switchActiveSort(event);
+          this.activeSortButton = index;
         }
       },
         components: {
