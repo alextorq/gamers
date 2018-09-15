@@ -5,9 +5,9 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     users: [],
-    usersСache: [],
     allUsers: [],
     searchGamers: [],
+    searchStatus: false,
     countUser: Math.ceil((Math.max(document.documentElement.clientHeight, window.innerHeight || 0) -300 ) / 60) || 7,
     //расчитываем количество игроков для подгрузки в зависимости от viewport height
     //300 и 60 расчитаны опытным путем
@@ -25,6 +25,9 @@ const store = new Vuex.Store({
         current: state.users.length,
         allUsers: state.allUsers.length
       }
+    },
+    searchStatus(state) {
+      return state.searchStatus;
     },
     searchUsers(state) {
       return state.searchGamers;
@@ -80,14 +83,26 @@ const store = new Vuex.Store({
       function sortAsc(a, b) {
         return a[field] - b[field]
       }
-      let field = payload.field;
-
-      if (payload.direction === 'ASC'){
-        state.users.sort(sortAsc);
-      } else {
-        state.users.sort(sortAsc).reverse();
+      function sortDesc(a, b) {
+        if (b[field] > a[field]){
+          return 1
+        } else if (b[field] < a[field]) {
+          return -1;
+        } else {
+          return 0;
+        }
       }
+      let field = payload.field;
+      let sortFunction = payload.direction === 'ASC' ? sortAsc : sortDesc;
 
+      //Второй ваант просто реверс массива для того что бы не создавать вторую функцию
+      // if (payload.direction === 'ASC') {
+      //   state.users.sort(sortAsc);
+      // } else {
+      //   state.users.sort(sortAsc).reverse();
+      // }
+
+      state.users.sort(sortFunction);
       state.sortDirection = payload.direction;
       state.sortField = payload.field;
     },
@@ -97,38 +112,30 @@ const store = new Vuex.Store({
     },
     search(state, payload) {
       state.searchGamers = [];
-      let countWord =  payload.split(' ').length;
-        //Смотрим количество слов в запросе
+      if (!payload) {
+        state.searchStatus = false;
+        return
+      }
+     let searchQuery = payload.toUpperCase();
+     let searchFilterArray = state.users.filter(
+        (user) => {
+          let userName = user.name.toUpperCase();
+          let userSecondName = user.secondName.toUpperCase();
+          let fullName = `${userName} ${userSecondName}`;
+          let fullNameReverse = `${userSecondName} ${userName}`;
+          let inForward = fullName.startsWith(searchQuery);
+          let inReverse = fullNameReverse.startsWith(searchQuery);
 
-        if (countWord === 1) {
-          //если только одно слово
-          state.users.filter(
-            (user) => {
-              let userNameFliter = user.name.toUpperCase().startsWith(payload.toUpperCase());
-              let userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.toUpperCase());
-              return userNameFliter || userSecondNameFliter;
-            }
-          ).forEach((user) => {state.searchGamers.push(user)});
-        } else {
-          state.users.filter(
-            (user) => {
-              let userNameFliter = user.name.toUpperCase().startsWith(payload.split(' ')[0].toUpperCase());
-
-              if (!userNameFliter) {
-                userNameFliter = user.name.toUpperCase().startsWith(payload.split(' ')[1].toUpperCase());
-              }
-
-              let userSecondNameFliter;
-              userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[1].toUpperCase());
-
-              if (!userSecondNameFliter) {
-                userSecondNameFliter = user.secondName.toUpperCase().startsWith(payload.split(' ')[0].toUpperCase());
-              }
-
-              return userNameFliter && userSecondNameFliter;
-            }
-          ).forEach((user) => {state.searchGamers.push(user)});
+          return inForward || inReverse;
         }
+      );
+     console.log(state.searchGamers, searchFilterArray);
+      state.searchGamers = state.searchGamers.concat(searchFilterArray);
+
+      if (state.searchGamers.length)  {
+        state.searchStatus = true;
+      }
+
     }
   }
 });

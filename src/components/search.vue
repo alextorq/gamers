@@ -16,7 +16,7 @@
         },
       methods: {
         getRequest(){
-          this.$store.commit('search', this.query);
+          this.$store.commit('search', this.query.trim());
         }
       }
     }

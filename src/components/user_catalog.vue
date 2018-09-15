@@ -22,11 +22,12 @@
         </div>
       </div>
     </li>
-    <!--<appUser v-for="(searchUser, index) in searchUsers" :key="index"-->
-             <!--:user="searchUser" v-if="searchUser.length > 0"></appUser>-->
-    <appUser v-for="(user, index) in users" :key="'gamer_' + index" :user="user"></appUser>
-    <!--<li v-else>Пользователи отстутствуют</li>-->
-    <!--<li>{{countUsers.current}} / {{countUsers.allUsers}} геймеров</li>-->
+    <template v-if="!searchStatus">
+      <appUser v-for="(user, index) in users" :key="'gamer_' + index" :user="user" ></appUser>
+    </template>
+    <template v-else>
+      <appUser v-for="(searchUser, index) in searchUsers" :key="'search' + index" :user="searchUser"></appUser>
+    </template>
   </ul>
 </template>
 
@@ -46,11 +47,11 @@
           users() {
             return this.$store.getters.users;
           },
-          countUsers() {
-            return this.$store.getters.countGamers;
-          },
           searchUsers() {
             return this.$store.getters.searchUsers;
+          },
+          searchStatus() {
+            return this.$store.getters.searchStatus;
           }
         },
       methods: {
@@ -77,7 +78,7 @@
             }
           }
           lastTime = currentTime;
-        });
+        }, {passive: true});
       }
     }
 
