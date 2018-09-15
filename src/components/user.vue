@@ -5,9 +5,9 @@
         <img v-if="this.user.avatar !== undefined" :src="user.avatar">
         <p v-else>{{logo}}</p>
       </div>
-      <p class="user__item-name">{{user.name}} {{user.secondName}}</p>
-      <p class="user__item-age">{{user.age}} лет</p>
-      <p class="user__item-rating">{{user.rating}} баллов</p>
+      <span class="user__item-name">{{user.name}} {{user.secondName}}</span>
+      <span class="user__item-age">{{user.age}} лет</span>
+      <span class="user__item-rating">{{user.rating}} баллов</span>
     </li>
 </template>
 

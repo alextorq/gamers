@@ -2,10 +2,10 @@
   <ul ref="searchNode" class="users-catalog">
     <appSearch></appSearch>
     <li class="user__item general">
-      <div class="user__item-number">#</div>
-      <div class="user__item-avatar">АЯ</div>
-      <p class="user__item-name">Имя</p>
-      <p class="user__item-age">Возраст</p>
+      <span class="user__item-number">#</span>
+      <span class="user__item-avatar">АЯ</span>
+      <span class="user__item-name">Имя</span>
+      <span class="user__item-age">Возраст</span>
       <div class="user__item-rating sort-selector">
           Сортировка
         <div class="sort-direction-wrapper">
@@ -70,7 +70,7 @@
         let lastTime = performance.now();
         document.addEventListener('scroll', () => {
           let currentTime = performance.now();
-          if (currentTime - lastTime > 16) {
+          if (currentTime - lastTime > 16 && !self.searchStatus) {
             let bottom =  self.$refs.searchNode.getBoundingClientRect().bottom;
 
             if (self.viewportHeight - bottom > 0) {
